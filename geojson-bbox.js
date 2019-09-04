@@ -28,13 +28,15 @@ function getCoordinatesDump(gj) {
     coords = gj.coordinates;
   } else if (gj.type == 'Polygon' || gj.type == 'MultiLineString') {
     coords = gj.coordinates.reduce(function(dump, part) {
-      return dump.push(...part);
+      dump.push(...part);
+      return dump;
     }, []);
   } else if (gj.type == 'MultiPolygon') {
     coords = gj.coordinates.reduce(function(dump, poly) {
       return dump.push(
         ...poly.reduce(function(points, part) {
-          return points.push(...part);
+          points.push(...part);
+          return points;
         }, [])
       );
     }, []);
@@ -42,11 +44,13 @@ function getCoordinatesDump(gj) {
     coords = getCoordinatesDump(gj.geometry);
   } else if (gj.type == 'GeometryCollection') {
     coords = gj.geometries.reduce(function(dump, g) {
-      return dump.push(...getCoordinatesDump(g));
+      dump.push(...getCoordinatesDump(g));
+      return dump;
     }, []);
   } else if (gj.type == 'FeatureCollection') {
     coords = gj.features.reduce(function(dump, f) {
-      return dump.push(...getCoordinatesDump(f));
+      dump.push(...getCoordinatesDump(f));
+      return dump;
     }, []);
   }
   return coords;
