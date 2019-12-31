@@ -33,12 +33,13 @@ function getCoordinatesDump(gj) {
     }, []);
   } else if (gj.type == 'MultiPolygon') {
     coords = gj.coordinates.reduce(function(dump, poly) {
-      return dump.push(
+      dump.push(
         ...poly.reduce(function(points, part) {
           points.push(...part);
           return points;
         }, [])
       );
+      return dump;
     }, []);
   } else if (gj.type == 'Feature') {
     coords = getCoordinatesDump(gj.geometry);
